@@ -134,8 +134,11 @@ const PricingComponent = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className={`text-4xl font-extrabold text-center mb-8 ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>Choose Your Perfect Plan</h1>
-          <p className={`text-xl text-center mb-12 ${isDarkTheme ? 'text-gray-300' : 'text-gray-600'}`}>Unlock the full potential of our platform with a plan that suits your needs</p>
+          <h1 className={`text-4xl font-extrabold text-center mb-8 ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>
+            Pricing that scales with<br />your growth
+          </h1>
+          <p className={`text-xl text-center mb-12 ${isDarkTheme ? 'text-gray-300' : 'text-gray-600'}`}>Designed for every stage of your journey.<br />Start today, no credit card required.
+          </p>
         </motion.div>
 
         <motion.div
