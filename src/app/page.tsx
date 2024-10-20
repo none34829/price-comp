@@ -24,6 +24,7 @@ interface Plan {
 
 const PricingComponent = () => {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(false);
