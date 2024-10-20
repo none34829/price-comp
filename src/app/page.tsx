@@ -176,8 +176,16 @@ const PricingComponent = () => {
       <div className="max-w-7xl mx-auto relative">
         {/* Theme toggle bar */}
         <div className="flex justify-end mb-4">
-          <button onClick={toggleTheme} aria-label="Toggle theme" className="flex items-center p-2 bg-gray-200 rounded-full shadow-md">
-            {isDarkTheme ? <Sun className="h-6 w-6 text-yellow-500" /> : <Moon className="h-6 w-6 text-gray-800" />}
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="flex items-center p-2 bg-gray-200 rounded-full shadow-md transition-colors duration-300 hover:bg-gray-300"
+          >
+            {isDarkTheme ? (
+              <Sun className="h-6 w-6 text-yellow-500 transition-transform duration-300 transform rotate-0" />
+            ) : (
+    <Moon className="h-6 w-6 text-gray-800 transition-transform duration-300 transform -rotate-90" />
+            )}
           </button>
         </div>
 

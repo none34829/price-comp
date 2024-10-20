@@ -85,3 +85,39 @@ body {
   box-shadow: 0 0 20px rgba(0, 153, 255, 0.7), 0 0 40px rgba(0, 153, 255, 0.5);
   transform: scale(1.05);
 }
+
+/* Base styles for all cards */
+.pricing-card {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Subtle glow effect for non-popular cards on hover */
+.pricing-card:not(.popular):hover {
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+}
+
+/* Enhanced glow effect for the popular card */
+.pricing-card.popular {
+  animation: prominentGlow 3s infinite;
+}
+
+/* Keyframe animation for the prominent glow effect */
+@keyframes prominentGlow {
+  0%, 100% { box-shadow: 0 0 5px rgba(30, 64, 175, 0.5); }
+  50% { box-shadow: 0 0 20px rgba(30, 64, 175, 0.8); }
+}
+
+/* Dark theme adjustments */
+.dark .pricing-card:not(.popular):hover {
+  box-shadow: 0 0 15px rgba(96, 165, 250, 0.3);
+}
+
+/* Popular card gradient for better visibility in light mode */
+.pricing-card.popular {
+  background: linear-gradient(to bottom, #1e40af, #1e3a8a);
+}
+
+/* Adjust text color for better readability */
+.pricing-card.popular * {
+  color: white;
+}
