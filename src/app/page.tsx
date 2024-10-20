@@ -203,14 +203,14 @@ const PricingComponent = () => {
                     {plan.price === 'Contact Us' && (
                       <span className="text-3xl font-extrabold">Contact Us</span> // Updated to be heavier
                     )}
+                    {plan.price === 'Try now' && (
+                      <span className="text-3xl font-extrabold">Try Now</span> // Updated to be heavier
+                    )}
                     {typeof plan.price === 'number' && !plan.originalPrice && (
                       <div className="mt-4 flex items-baseline">
                         <span className="text-4xl font-extrabold">${plan.price}</span>
                         <span className={`ml-1 ${index === 2 ? 'text-blue-100' : 'text-gray-500'}`}>/{billingCycle === 'monthly' ? 'month' : 'year'}</span>
                       </div>
-                    )}
-                    {typeof plan.price !== 'number' && (
-                      <span className="text-3xl font-bold">{plan.price}</span>
                     )}
                     {plan.credits && (
                       <div className={`mt-2 ${index === 2 ? 'text-blue-100' : 'text-blue-600'} font-semibold`}>
