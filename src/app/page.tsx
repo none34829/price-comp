@@ -196,7 +196,7 @@ const PricingComponent = () => {
             </span>
           </h1>
           <p className={`text-xl text-center mb-12 ${isDarkTheme ? 'text-gray-300' : 'text-gray-600'} max-w-2xl mx-auto`}>
-            Designed for every stage of your journey. Start today, no credit card required.
+            Designed for every stage of your journey. <br />Start today, no credit card required.
           </p>
         </motion.div>
 
