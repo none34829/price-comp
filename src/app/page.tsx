@@ -33,6 +33,8 @@ const PricingComponent = () => {
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
   // State to manage the theme (light or dark)
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+  // State to track the scroll position
+  const [scrollY, setScrollY] = useState(0);
 
   // Load images on component mount
   useEffect(() => {
@@ -41,6 +43,18 @@ const PricingComponent = () => {
       const img = new Image();
       img.src = `/images/${image}`;
     });
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY); // Update scrollY on scroll
+    };
+
+    window.addEventListener('scroll', handleScroll); // Add event listener
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll); // Clean up
+    };
   }, []);
 
   // Define the available pricing plans
