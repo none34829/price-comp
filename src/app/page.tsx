@@ -10,25 +10,31 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Define the structure of a pricing plan
 interface Plan {
-  name: string;
-  price: number | string;
-  originalPrice?: number;
-  credits?: number;
-  description?: string;
-  features: string[];
-  cta: string;
-  additionalFeatures?: string[];
-  popular?: boolean;
+  name: string; // Name of the plan
+  price: number | string; // Price of the plan
+  originalPrice?: number; // Original price for discount display
+  credits?: number; // Number of credits included in the plan
+  description?: string; // Description of the plan
+  features: string[]; // List of features included in the plan
+  cta: string; // Call to action text
+  additionalFeatures?: string[]; // Additional features for the plan
+  popular?: boolean; // Flag to indicate if the plan is popular
 }
 
 const PricingComponent = () => {
+  // State to manage billing cycle (monthly or annual)
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
+  // State to track the selected plan
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  // State to control the visibility of the comparison dialog
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
+  // State to manage the theme (light or dark)
   const [isDarkTheme, setIsDarkTheme] = useState(false);
 
+  // Load images on component mount
   useEffect(() => {
     const images = ['pricing-bg.jpg', 'logo.svg'];
     images.forEach((image) => {
@@ -37,6 +43,7 @@ const PricingComponent = () => {
     });
   }, []);
 
+  // Define the available pricing plans
   const plans: Plan[] = [
     {
       name: 'Trial',
@@ -110,18 +117,49 @@ const PricingComponent = () => {
     },
   ];
 
+  // Function to handle plan selection
   const handlePlanSelect = (planName: string) => {
     setSelectedPlan(planName);
     console.log(`Plan selected: ${planName}`);
   };
 
+  // Function to toggle between light and dark themes
   const toggleTheme = () => {
-    setIsDarkTheme(!isDarkTheme);
+    setIsDarkTheme(!isDarkTheme); // Toggle theme state
   };
 
   return (
-    <div className={`min-h-screen ${isDarkTheme ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-blue-50 to-indigo-100 text-gray-900'} py-12 px-4 sm:px-6 lg:px-8`}>
-      <div className="max-w-7xl mx-auto">
+    <div className={`min-h-screen ${isDarkTheme ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-blue-50 to-indigo-100 text-gray-900'} py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden`}>
+    {/* Add animated background elements */}
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <motion.div
+        className="absolute -top-16 -left-16 w-32 h-32 bg-blue-500 rounded-full opacity-10"
+        animate={{
+          scale: [1, 1.2, 1],
+          x: [0, 10, 0],
+          y: [0, 15, 0],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          repeatType: "reverse"
+        }}
+      />
+      <motion.div
+        className="absolute top-1/4 right-1/4 w-64 h-64 bg-purple-500 rounded-full opacity-10"
+        animate={{
+          scale: [1, 1.1, 1],
+          x: [0, -20, 0],
+          y: [0, 10, 0],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          repeatType: "reverse"
+        }}
+      />
+    </div>
+      <div className="max-w-7xl mx-auto relative">
         {/* Theme toggle bar */}
         <div className="flex justify-end mb-4">
           <button onClick={toggleTheme} aria-label="Toggle theme" className="flex items-center p-2 bg-gray-200 rounded-full shadow-md">
@@ -129,25 +167,33 @@ const PricingComponent = () => {
           </button>
         </div>
 
+        {/* Header section*/}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
+          style={{ y: scrollY * -0.2 }} // Parallax effect
         >
-          <h1 className={`text-4xl font-extrabold text-center mb-8 ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>
-            Pricing that scales with<br />your growth
+          <h1 className={`text-5xl font-extrabold text-center mb-8 ${isDarkTheme ? 'text-white' : 'text-gray-900'} tracking-tight`}>
+            Pricing that scales with
+            <br />
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
+              your growth
+            </span>
           </h1>
-          <p className={`text-xl text-center mb-12 ${isDarkTheme ? 'text-gray-300' : 'text-gray-600'}`}>Designed for every stage of your journey.<br />Start today, no credit card required.
+          <p className={`text-xl text-center mb-12 ${isDarkTheme ? 'text-gray-300' : 'text-gray-600'} max-w-2xl mx-auto`}>
+            Designed for every stage of your journey. Start today, no credit card required.
           </p>
         </motion.div>
 
+        {/* Billing cycle toggle */}
         <motion.div
           className="flex justify-center mb-12"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.3 }}
         >
-          <div className="bg-white rounded-full p-1 shadow-lg flex items-center">
+          <div className={`bg-white rounded-full p-1 shadow-lg flex items-center ${isDarkTheme ? 'bg-gray-800' : ''}`}>
             <span className={`px-4 py-2 ${billingCycle === 'monthly' ? 'text-blue-600 font-medium' : 'text-gray-500'}`}>Monthly</span>
             <Switch
               checked={billingCycle === 'annual'}
@@ -158,6 +204,7 @@ const PricingComponent = () => {
           </div>
         </motion.div>
 
+        {/* Plans grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <AnimatePresence>
             {plans.map((plan, index) => (
@@ -189,7 +236,7 @@ const PricingComponent = () => {
                             key={billingCycle} // Key to trigger re-animation
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5 }} // Adjust duration as needed
+                            transition={{ duration: 0.5 }} 
                           >
                             <span className={`text-4xl font-extrabold ${index === 2 ? 'text-white' : ''}`}>${plan.price}</span>
                           </motion.div>
@@ -200,15 +247,15 @@ const PricingComponent = () => {
                             <BadgePercent className="mr-1.5 h-4 w-4 text-green-600" />
                             50% off
                           </span>
-                          <span className={`ml-2 ${index === 2 ? 'text-blue-200' : 'text-gray-500'} line-through`}>${plan.originalPrice}</span>
+                          <span className={`ml-2 ${index === 2 ? 'text-blue-200' : 'text-gray-500'} line-through font-bold`}>${plan.originalPrice}</span>
                         </div>
                       </div>
                     )}
                     {plan.price === 'Contact Us' && (
-                      <span className="text-3xl font-extrabold">Contact Us</span> // Updated to be heavier
+                      <span className="text-3xl font-extrabold">Contact Us</span> 
                     )}
                     {plan.price === 'Try now' && (
-                      <span className="text-3xl font-extrabold">Try Now</span> // Updated to be heavier
+                      <span className="text-3xl font-extrabold">Try Now</span> 
                     )}
                     {typeof plan.price === 'number' && !plan.originalPrice && (
                       <div className="mt-4 flex items-baseline">
@@ -251,7 +298,7 @@ const PricingComponent = () => {
                   <CardFooter className="mt-auto">
                     <Button 
                       className={`w-full group ${index === 2 ? 'bg-white text-blue-600 hover:bg-blue-50' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
-                      onClick={() => handlePlanSelect(plan.name)}
+                      onClick={() => handlePlanSelect(plan.name)} // Handle plan selection
                       aria-label={`Select ${plan.name} plan`}
                     >
                       {plan.cta}
@@ -264,42 +311,58 @@ const PricingComponent = () => {
           </AnimatePresence>
         </div>
 
-        <div className="mt-12 text-center">
+        {/* Comparison button and tooltip */}
+        <motion.div
+          className="mt-12 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="link" onClick={() => setIsComparisonOpen(true)} className={`text-lg ${isDarkTheme ? 'text-gray-300' : 'text-blue-600'}`}>
-                Compare Plans <HelpCircleIcon className="ml-1 h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Click to see a detailed comparison of all plans</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        </div>
+                <Button
+                  variant="link"
+                  onClick={() => setIsComparisonOpen(true)}
+                  className={`text-lg ${isDarkTheme ? 'text-gray-300' : 'text-blue-600'} hover:underline transition-all duration-300`}
+                >
+                  Compare Plans <HelpCircleIcon className="ml-1 h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Click to see a detailed comparison of all plans</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </motion.div>
 
+        {/* Comparison dialog */}
         <Dialog open={isComparisonOpen} onOpenChange={setIsComparisonOpen}>
-          <DialogContent className="max-w-4xl">
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Plan Comparison</DialogTitle>
+              <DialogTitle className="text-2xl font-bold mb-4">Plan Comparison</DialogTitle>
             </DialogHeader>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Feature</TableHead>
+                  <TableHead className="font-bold">Feature</TableHead>
                   {plans.map((plan) => (
-                    <TableHead key={plan.name}>{plan.name}</TableHead>
+                    <TableHead key={plan.name} className="font-bold">{plan.name}</TableHead>
                   ))}
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {plans[0].features.map((feature, index) => (
-                  <TableRow key={index}>
+                {/* Iterates over all features from all plans */}
+                {plans.flatMap(plan => plan.features).map((feature, index) => (
+                  <TableRow key={index} className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
                     <TableCell>{feature}</TableCell>
                     {plans.map((plan) => (
                       <TableCell key={plan.name}>
-                        {plan.features.includes(feature) ? <CheckIcon className="text-green-500" /> : '-'}
+                        {plan.features.includes(feature) ? (
+                          <CheckIcon className="text-green-500 h-5 w-5" />
+                        ) : (
+                          <span className="text-gray-400">-</span>
+                        )}
                       </TableCell>
                     ))}
                   </TableRow>
